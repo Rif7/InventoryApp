@@ -1,11 +1,13 @@
 package com.example.android.inventoryapp;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
+import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryDbHelper;
 
 import org.junit.After;
@@ -50,6 +52,30 @@ public class InventoryDbTest {
 
         assertEquals(db.getVersion(), dbVersion.getInt(null));
         Log.e("testDb", db.getPath());
+
+        verifyInventoryTables();
+    }
+
+    private void verifyInventoryTables() {
+        SQLiteDatabase db = inventoryDbHelper.getWritableDatabase();
+        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+        StringBuilder tables = new StringBuilder();
+        boolean isInventoryTable = false;
+
+        if (c.moveToFirst()) {
+            while ( !c.isAfterLast() ) {
+                String tableName = c.getString(0);
+                if (tableName.equals(InventoryContract.InventoryEntry.TABLE_NAME)) {
+                    isInventoryTable = true;
+                }
+                tables.append(tableName).append(", ");
+                c.moveToNext();
+            }
+        }
+        c.close();
+        Log.e("tables = ", tables.toString());
+        assertTrue(isInventoryTable);
     }
 
 }
