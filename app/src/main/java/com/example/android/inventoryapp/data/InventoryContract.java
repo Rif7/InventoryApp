@@ -6,10 +6,6 @@ public final class InventoryContract {
 
     private InventoryContract() {}
 
-    /**
-     * Inner class that defines constant values for the inventories database table.
-     * Each entry in the table represents a single inventory.
-     */
     public static final class InventoryEntry implements BaseColumns {
 
         /**

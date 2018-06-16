@@ -40,8 +40,9 @@ public class InventoryDbTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         inventoryDbHelper.close();
+        appContext.deleteDatabase(TestInventoryDbHelper.DATABASE_NAME);
     }
 
     @Test
@@ -59,7 +60,7 @@ public class InventoryDbTest {
     }
 
     @Test
-    public void testAddInventory() throws NoSuchFieldException, IllegalAccessException {
+    public void testAddDisplayInventory() {
         InventoryUtils.insertInventory(inventoryDbHelper, new Inventory());
         InventoryUtils.insertInventory(inventoryDbHelper, new Inventory(
                 "LG Leon",
@@ -68,7 +69,30 @@ public class InventoryDbTest {
                 "LG",
                 "534 5420 353"
         ));
-        verifyTableContents();
+        InventoryUtils.insertInventory(inventoryDbHelper, new Inventory(
+                "iPhone 6",
+                64900,
+                9,
+                "Apple",
+                null
+        ));
+        InventoryUtils.insertInventory(inventoryDbHelper, new Inventory(
+                "Huawei Y6",
+                12900,
+                3,
+                "Huawei",
+                null
+        ));
+        StringCursorParser parser1 = verifyTableContents(4);
+
+        StringCursorParser parser2 = new StringCursorParser();
+        InventoryUtils.queryInventory(inventoryDbHelper, parser2);
+
+        Log.e(LOG_TAG, "### queryInventory start #################");
+        Log.e(LOG_TAG, parser2.getParsedQuerry());
+        Log.e(LOG_TAG, "### queryInventory end ################");
+
+        assertEquals(parser1.getParsedQuerry(), parser2.getParsedQuerry());
     }
 
     private void verifyInventoryTables() {
@@ -93,28 +117,23 @@ public class InventoryDbTest {
         assertTrue(isInventoryTable);
     }
 
-    private void verifyTableContents() {
+    private StringCursorParser verifyTableContents(int insertedData) {
         SQLiteDatabase db = inventoryDbHelper.getWritableDatabase();
         String query = "SELECT * FROM " + InventoryContract.InventoryEntry.TABLE_NAME;
         Cursor c = db.rawQuery(query, null);
 
-        Log.e(LOG_TAG, "################start#################");
-        int count = 0;
-        if (c.moveToFirst()) {
-            String[] columnNames = c.getColumnNames();
-            while ( !c.isAfterLast() ) {
-                StringBuilder s = new StringBuilder();
-                for (String name: columnNames) {
-                    s.append(c.getString(c.getColumnIndex(name))).append(" | ");
-                }
-                Log.e(LOG_TAG, s.toString());
-                c.moveToNext();
-                count++;
-            }
-        }
-        assertEquals(2,count);
-        Log.e(LOG_TAG, "#################end################");
+        StringCursorParser parser = new StringCursorParser();
+        parser.parse(c);
+
+        String dbContent = (parser.getParsedQuerry());
+        String[] rows = dbContent.split("\n");
+        assertEquals(1 + insertedData,rows.length);
+
+        Log.e(LOG_TAG, "### verifyTableContents start #################");
+        Log.e(LOG_TAG, dbContent);
+        Log.e(LOG_TAG, "### verifyTableContents end################");
         c.close();
+        return parser;
     }
 
 }
