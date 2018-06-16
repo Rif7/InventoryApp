@@ -15,7 +15,7 @@ public class InventoryContract {
         /**
          * Name of database table for inventory
          */
-        public final static String TABLE_NAME = "inventories";
+        public final static String TABLE_NAME = "inventory";
 
         /**
          * Unique ID number for the inventory (only for use in the database table).
