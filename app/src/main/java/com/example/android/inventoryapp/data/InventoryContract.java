@@ -55,7 +55,7 @@ public final class InventoryContract {
         /**
          * Supplier Phone Number.
          *
-         * Type: INTEGER
+         * Type: TEXT
          */
         public final static String COLUMN_SUPPLIER_PHONE_NUMBER = "supplier_phone_number";
     }

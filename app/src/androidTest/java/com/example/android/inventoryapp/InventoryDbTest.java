@@ -26,6 +26,8 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class InventoryDbTest {
+    public static final String LOG_TAG = "InventoryDbTest";
+
     private Context appContext;
     private TestInventoryDbHelper inventoryDbHelper;
 
@@ -51,9 +53,22 @@ public class InventoryDbTest {
         dbVersion.setAccessible(true);
 
         assertEquals(db.getVersion(), dbVersion.getInt(null));
-        Log.e("testDb", db.getPath());
+        Log.e(LOG_TAG, db.getPath());
 
         verifyInventoryTables();
+    }
+
+    @Test
+    public void testAddInventory() throws NoSuchFieldException, IllegalAccessException {
+        InventoryUtils.insertInventory(inventoryDbHelper, new Inventory());
+        InventoryUtils.insertInventory(inventoryDbHelper, new Inventory(
+                "LG Leon",
+                9900,
+                null,
+                "LG",
+                "534 5420 353"
+        ));
+        verifyTableContents();
     }
 
     private void verifyInventoryTables() {
@@ -74,8 +89,32 @@ public class InventoryDbTest {
             }
         }
         c.close();
-        Log.e("tables = ", tables.toString());
+        Log.e(LOG_TAG, tables.toString());
         assertTrue(isInventoryTable);
+    }
+
+    private void verifyTableContents() {
+        SQLiteDatabase db = inventoryDbHelper.getWritableDatabase();
+        String query = "SELECT * FROM " + InventoryContract.InventoryEntry.TABLE_NAME;
+        Cursor c = db.rawQuery(query, null);
+
+        Log.e(LOG_TAG, "################start#################");
+        int count = 0;
+        if (c.moveToFirst()) {
+            String[] columnNames = c.getColumnNames();
+            while ( !c.isAfterLast() ) {
+                StringBuilder s = new StringBuilder();
+                for (String name: columnNames) {
+                    s.append(c.getString(c.getColumnIndex(name))).append(" | ");
+                }
+                Log.e(LOG_TAG, s.toString());
+                c.moveToNext();
+                count++;
+            }
+        }
+        assertEquals(2,count);
+        Log.e(LOG_TAG, "#################end################");
+        c.close();
     }
 
 }
