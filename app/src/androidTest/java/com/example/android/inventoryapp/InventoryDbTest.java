@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class InventoryDbTest {
-    public static final String LOG_TAG = "InventoryDbTest";
+    private static final String LOG_TAG = "InventoryDbTest";
 
     private Context appContext;
     private TestInventoryDbHelper inventoryDbHelper;
@@ -83,16 +83,18 @@ public class InventoryDbTest {
                 "Huawei",
                 null
         ));
+        // Use SQL syntax in db.rawQuery() method
         StringCursorParser parser1 = verifyTableContents(4);
 
+        // Use default projection in db.query method
         StringCursorParser parser2 = new StringCursorParser();
         InventoryUtils.queryInventory(inventoryDbHelper, parser2);
 
         Log.e(LOG_TAG, "### queryInventory start #################");
-        Log.e(LOG_TAG, parser2.getParsedQuerry());
+        Log.e(LOG_TAG, parser2.getParsedQuery());
         Log.e(LOG_TAG, "### queryInventory end ################");
 
-        assertEquals(parser1.getParsedQuerry(), parser2.getParsedQuerry());
+        assertEquals(parser1.getParsedQuery(), parser2.getParsedQuery());
     }
 
     private void verifyInventoryTables() {
@@ -125,7 +127,7 @@ public class InventoryDbTest {
         StringCursorParser parser = new StringCursorParser();
         parser.parse(c);
 
-        String dbContent = (parser.getParsedQuerry());
+        String dbContent = (parser.getParsedQuery());
         String[] rows = dbContent.split("\n");
         assertEquals(1 + insertedData,rows.length);
 

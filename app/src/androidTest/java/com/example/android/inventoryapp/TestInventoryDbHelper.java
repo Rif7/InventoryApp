@@ -4,9 +4,10 @@ import android.content.Context;
 
 import com.example.android.inventoryapp.data.InventoryDbHelper;
 
-public class TestInventoryDbHelper extends InventoryDbHelper {
-    public static final String LOG_TAG = TestInventoryDbHelper.class.getSimpleName();
-
+/**
+ * Helper class used for creating test database.
+ */
+class TestInventoryDbHelper extends InventoryDbHelper {
     public static final String DATABASE_NAME = "test_storage.db";
 
     TestInventoryDbHelper(Context context) {

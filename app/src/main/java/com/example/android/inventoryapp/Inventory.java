@@ -1,9 +1,11 @@
 package com.example.android.inventoryapp;
 
-public class Inventory {
+class Inventory {
     private String productName;
+    // Use Integer object instead of raw int to distinguish null value
     private Integer price;
     private Integer quantity;
+
     private String supplierName;
     private String supplierPhoneNumber;
 
@@ -11,7 +13,7 @@ public class Inventory {
         setDummyData();
     }
 
-    public Inventory(String productName, Integer price, Integer quantity, String supplierName, String supplierPhoneNumber) {
+    Inventory(String productName, Integer price, Integer quantity, String supplierName, String supplierPhoneNumber) {
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;

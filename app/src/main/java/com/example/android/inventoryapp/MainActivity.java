@@ -1,6 +1,5 @@
 package com.example.android.inventoryapp;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +54,6 @@ public class MainActivity extends AppCompatActivity {
         TextView textView =  (TextView) findViewById(R.id.db_content);
         StringCursorParser parser = new StringCursorParser();
         InventoryUtils.queryInventory(mDbHelper, parser);
-        textView.setText(parser.getParsedQuerry());
+        textView.setText(parser.getParsedQuery());
     }
 }

@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 import com.example.android.inventoryapp.data.InventoryDbHelper;
 
-public final class InventoryUtils {
+final class InventoryUtils {
 
     /**
      * Get {@link Inventory} object and store in db.
      */
-    public static long insertInventory(InventoryDbHelper inventoryDbHelper, Inventory inventory){
+    public static long insertInventory(InventoryDbHelper inventoryDbHelper, Inventory inventory) {
         // Insert into database.
         SQLiteDatabase db = inventoryDbHelper.getWritableDatabase();
 
@@ -30,10 +30,9 @@ public final class InventoryUtils {
 
     /**
      * Default query with all fields.
-     *
      */
-    public static Cursor queryInventory(InventoryDbHelper inventoryDbHelper,
-                                         CursorParser cursorParser) {
+    public static void queryInventory(InventoryDbHelper inventoryDbHelper,
+                                      CursorParser cursorParser) {
 
         String[] projection = {
                 InventoryEntry._ID,
@@ -43,17 +42,17 @@ public final class InventoryUtils {
                 InventoryEntry.COLUMN_SUPPLIER_NAME,
                 InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER
         };
-        return queryInventory(inventoryDbHelper, projection, cursorParser);
+        queryInventory(inventoryDbHelper, projection, cursorParser);
     }
 
     /**
      * Specified query with fields given as parameter.
      *
-     * @param projection Array of strings from {@link InventoryEntry} column names
+     * @param projection   Array of strings from {@link InventoryEntry} column names
      * @param cursorParser Object with needed method to process cursor data
      */
-    private static Cursor queryInventory(InventoryDbHelper inventoryDbHelper, String[] projection,
-                                         CursorParser cursorParser){
+    private static void queryInventory(InventoryDbHelper inventoryDbHelper, String[] projection,
+                                       CursorParser cursorParser) {
         SQLiteDatabase db = inventoryDbHelper.getReadableDatabase();
 
         Cursor cursor = db.query(
@@ -69,12 +68,11 @@ public final class InventoryUtils {
         } finally {
             cursor.close();
         }
-        return cursor;
     }
 
     interface CursorParser {
         /**
-         * Parse and process data. Does not close the cursor.
+         * Parse and process data.
          *
          * @param cursor as db query result
          */
@@ -85,32 +83,33 @@ public final class InventoryUtils {
 
 /**
  * Default class for handling data from cursor. Proper for testing or showing results in single text.
+ * Does not close the cursor.
  */
 class StringCursorParser implements InventoryUtils.CursorParser {
-    private String parsedQuerry;
+    private String parsedQuery;
 
     @Override
     public void parse(Cursor cursor) {
         StringBuilder s = new StringBuilder();
         if (cursor.moveToFirst()) {
             String[] columnNames = cursor.getColumnNames();
-            for (String columnName:columnNames) {
+            for (String columnName : columnNames) {
                 s.append(columnName).append(" | ");
             }
             s.append("\n");
-            while ( !cursor.isAfterLast() ) {
-                for (String name: columnNames) {
+            while (!cursor.isAfterLast()) {
+                for (String name : columnNames) {
                     s.append(cursor.getString(cursor.getColumnIndex(name))).append(" | ");
                 }
                 cursor.moveToNext();
                 s.append("\n");
             }
         }
-        parsedQuerry = s.toString();
+        parsedQuery = s.toString();
     }
 
-    public String getParsedQuerry() {
-        return parsedQuerry;
+    public String getParsedQuery() {
+        return parsedQuery;
     }
 }
 

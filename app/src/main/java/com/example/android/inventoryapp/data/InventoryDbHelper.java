@@ -10,8 +10,6 @@ import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
  */
 public class InventoryDbHelper extends SQLiteOpenHelper {
 
-    public static final String LOG_TAG = InventoryDbHelper.class.getSimpleName();
-
     /** Name of the database file */
     private static final String DATABASE_NAME = "storage.db";
 
@@ -31,7 +29,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
 
     /**
      * Constructs a new instance of {@link InventoryDbHelper} with {@link SQLiteOpenHelper}
-     * public constructor parameters. Used in tests
+     * public constructor parameters. Used in derived class in tests.
      *
      * @param context of the app
      * @param name name of DB
