@@ -96,7 +96,22 @@ public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> 
         Log.d(LOG_TAG, parsedCursor);
         assertEquals(false, parsedCursor.contains("2 | LG Leon | 9900 | 0 | LG | 534 5420 353 |"));
         assertEquals(true, parsedCursor.contains("2 | Sony Xperia | 44400 | 1 | Sony | null |"));
+    }
 
+    @Test
+    public void testDeleteSingleItem() {
+        insertSomeData();
+        Uri secondItemURI = Uri.withAppendedPath(InventoryContract.InventoryEntry.CONTENT_URI, "2");
+        int affectedRows = mockContentResolver.delete(secondItemURI, null, null);
+        assertEquals(1, affectedRows);
+        Cursor cursor = mockContentResolver.query(InventoryContract.InventoryEntry.CONTENT_URI, null, null, null, null);
+        StringCursorParser parser = new StringCursorParser();
+        parser.parse(cursor);
+        String parsedCursor = parser.getParsedQuery();
+        Log.d(LOG_TAG, parsedCursor);
+        assertEquals(false, parsedCursor.contains("2 | LG Leon | 9900 | 0 | LG | 534 5420 353 |"));
+        assertEquals(true, parsedCursor.contains("3 | iPhone 6 | 64900 | 9 | Apple | null |"));
+        assertEquals(true, parsedCursor.contains("4 | Huawei Y6 | 12900 | 3 | Huawei | null |"));
     }
 
     private void insertSomeData() {

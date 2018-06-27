@@ -51,7 +51,6 @@ public class InventoryProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
                         @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteDatabase database = inventoryDbHelper.getReadableDatabase();
-
         Cursor cursor;
 
         int match = uriMatcher.match(uri);
@@ -93,20 +92,28 @@ public class InventoryProvider extends ContentProvider {
 
     private Uri insertInventory(Uri uri, ContentValues values) {
         SQLiteDatabase database = inventoryDbHelper.getWritableDatabase();
-
         long id = database.insert(InventoryContract.InventoryEntry.TABLE_NAME, null, values);
-
         if (id == -1) {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
         }
-
         return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        SQLiteDatabase database = inventoryDbHelper.getWritableDatabase();
+        final int match = uriMatcher.match(uri);
+        switch (match) {
+            case INVENTORIES:
+                return database.delete(InventoryContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
+            case INVENTORY_ID:
+                selection = InventoryContract.InventoryEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return database.delete(InventoryContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
     }
 
     @Override
