@@ -15,7 +15,11 @@ final class InventoryUtils {
     public static long insertInventory(InventoryDbHelper inventoryDbHelper, Inventory inventory) {
         // Insert into database.
         SQLiteDatabase db = inventoryDbHelper.getWritableDatabase();
+        return db.insert(InventoryEntry.TABLE_NAME, null,
+                getContentValuesForInventory(inventory));
+    }
 
+    public static ContentValues getContentValuesForInventory(Inventory inventory) {
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, inventory.getProductName());
         values.put(InventoryEntry.COLUMN_PRICE, inventory.getPrice());
@@ -24,8 +28,7 @@ final class InventoryUtils {
         }
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, inventory.getSupplierName());
         values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER, inventory.getSupplierPhoneNumber());
-
-        return db.insert(InventoryEntry.TABLE_NAME, null, values);
+        return values;
     }
 
     /**
