@@ -29,25 +29,25 @@ public class InventoryDbTest {
     private static final String LOG_TAG = "InventoryDbTest";
 
     private Context appContext;
-    private TestInventoryDbHelper inventoryDbHelper;
+    private InventoryTestDbHelper inventoryDbHelper;
 
     @Before
     public void createDb() {
         appContext = InstrumentationRegistry.getTargetContext();
         // Prepare fresh database
-        appContext.deleteDatabase(TestInventoryDbHelper.DATABASE_NAME);
-        inventoryDbHelper = new TestInventoryDbHelper(appContext);
+        appContext.deleteDatabase(InventoryTestDbHelper.DATABASE_NAME);
+        inventoryDbHelper = new InventoryTestDbHelper(appContext);
     }
 
     @After
     public void tearDown() {
         inventoryDbHelper.close();
-        appContext.deleteDatabase(TestInventoryDbHelper.DATABASE_NAME);
+        appContext.deleteDatabase(InventoryTestDbHelper.DATABASE_NAME);
     }
 
     @Test
     public void testDb() throws NoSuchFieldException, IllegalAccessException {
-        assertEquals(inventoryDbHelper.getDatabaseName(), TestInventoryDbHelper.DATABASE_NAME);
+        assertEquals(inventoryDbHelper.getDatabaseName(), InventoryTestDbHelper.DATABASE_NAME);
         SQLiteDatabase db = inventoryDbHelper.getReadableDatabase();
 
         Field dbVersion = InventoryDbHelper.class.getDeclaredField("DATABASE_VERSION");
