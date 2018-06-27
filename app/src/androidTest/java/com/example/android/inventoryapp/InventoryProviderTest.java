@@ -11,6 +11,8 @@ import android.util.Log;
 import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryProvider;
 
+import org.junit.Test;
+
 import static com.example.android.inventoryapp.InventoryUtils.getContentValuesForInventory;
 
 /**
@@ -43,6 +45,7 @@ public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> 
         Log.d(LOG_TAG, "tearDown:");
     }
 
+    @Test
     public void testQuery() {
         insertSomeData();
         Cursor cursor = mockContentResolver.query(InventoryContract.InventoryEntry.CONTENT_URI, null, null, null, null);
@@ -51,11 +54,12 @@ public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> 
         parser.parse(cursor);
         String parsedCursor = parser.getParsedQuery();
         Log.d(LOG_TAG, parsedCursor);
-        assertEquals(true, parsedCursor.contains("2 | LG Leon | 9900 | 0 | LG | 534 5420 353 |" ));
-        assertEquals(true, parsedCursor.contains("3 | iPhone 6 | 64900 | 9 | Apple | null |" ));
-        assertEquals(true, parsedCursor.contains("4 | Huawei Y6 | 12900 | 3 | Huawei | null |" ));
+        assertEquals(true, parsedCursor.contains("2 | LG Leon | 9900 | 0 | LG | 534 5420 353 |"));
+        assertEquals(true, parsedCursor.contains("3 | iPhone 6 | 64900 | 9 | Apple | null |"));
+        assertEquals(true, parsedCursor.contains("4 | Huawei Y6 | 12900 | 3 | Huawei | null |"));
     }
 
+    @Test
     public void testSingleItemQuery() {
         insertSomeData();
         Cursor cursor = mockContentResolver.query(
@@ -66,37 +70,61 @@ public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> 
         parser.parse(cursor);
         String parsedCursor = parser.getParsedQuery();
         Log.d(LOG_TAG, parsedCursor);
-        assertEquals(true, parsedCursor.contains("2 | LG Leon | 9900 | 0 | LG | 534 5420 353 |" ));
-        assertEquals(false, parsedCursor.contains("3 | iPhone 6 | 64900 | 9 | Apple | null |" ));
-        assertEquals(false, parsedCursor.contains("4 | Huawei Y6 | 12900 | 3 | Huawei | null |" ));
+        assertEquals(true, parsedCursor.contains("2 | LG Leon | 9900 | 0 | LG | 534 5420 353 |"));
+        assertEquals(false, parsedCursor.contains("3 | iPhone 6 | 64900 | 9 | Apple | null |"));
+        assertEquals(false, parsedCursor.contains("4 | Huawei Y6 | 12900 | 3 | Huawei | null |"));
     }
-    
+
+    @Test
+    public void testUpdateSingleItem() {
+        insertSomeData();
+        Uri secondItemURI = Uri.withAppendedPath(InventoryContract.InventoryEntry.CONTENT_URI, "2");
+        int affectedRows = mockContentResolver.update(secondItemURI,
+                getContentValuesForInventory(new Inventory(
+                        "Sony Xperia",
+                        44400,
+                        1,
+                        "Sony",
+                        null)), null, null);
+        assertEquals(1, affectedRows);
+        Cursor cursor = mockContentResolver.query(
+                secondItemURI, null, null, null, null);
+        assertNotNull(cursor);
+        StringCursorParser parser = new StringCursorParser();
+        parser.parse(cursor);
+        String parsedCursor = parser.getParsedQuery();
+        Log.d(LOG_TAG, parsedCursor);
+        assertEquals(false, parsedCursor.contains("2 | LG Leon | 9900 | 0 | LG | 534 5420 353 |"));
+        assertEquals(true, parsedCursor.contains("2 | Sony Xperia | 44400 | 1 | Sony | null |"));
+
+    }
+
     private void insertSomeData() {
         Uri uri = InventoryContract.InventoryEntry.CONTENT_URI;
-        
+
         mockContentResolver.insert(uri, getContentValuesForInventory(new Inventory()));
         mockContentResolver.insert(uri, getContentValuesForInventory(new Inventory(
-            "LG Leon",
-            9900,
-            null,
-            "LG",
-            "534 5420 353"
+                "LG Leon",
+                9900,
+                null,
+                "LG",
+                "534 5420 353"
         )));
-        mockContentResolver.insert(uri, getContentValuesForInventory( new Inventory(
-            "iPhone 6",
-            64900,
-            9,
-            "Apple",
-            null
+        mockContentResolver.insert(uri, getContentValuesForInventory(new Inventory(
+                "iPhone 6",
+                64900,
+                9,
+                "Apple",
+                null
         )));
-        mockContentResolver.insert(uri, getContentValuesForInventory( new Inventory(
-            "Huawei Y6",
-            12900,
-            3,
-            "Huawei",
-            null
+        mockContentResolver.insert(uri, getContentValuesForInventory(new Inventory(
+                "Huawei Y6",
+                12900,
+                3,
+                "Huawei",
+                null
         )));
     }
-    
+
 
 }
