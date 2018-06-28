@@ -27,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        TextView textView =  (TextView) findViewById(R.id.db_content);
+        TextView textView = (TextView) findViewById(R.id.db_content);
         StringCursorParser parser = new StringCursorParser();
-        InventoryUtils.queryInventory(getContentResolver(),  InventoryUtils.prepareProjection(),
+        InventoryUtils.queryInventory(getContentResolver(), InventoryUtils.prepareProjection(),
                 parser);
         textView.setText(parser.getParsedQuery());
     }

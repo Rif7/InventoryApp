@@ -50,11 +50,11 @@ final class InventoryUtils {
      * Specified query with fields given as parameter.
      *
      * @param contentResolver {@link ContentResolver} used to create query
-     * @param projection   Array of strings from {@link InventoryEntry} column names
-     * @param cursorParser Object with needed method to process cursor data
+     * @param projection      Array of strings from {@link InventoryEntry} column names
+     * @param cursorParser    Object with needed method to process cursor data
      */
     public static void queryInventory(ContentResolver contentResolver, String[] projection,
-                                       CursorParser cursorParser) {
+                                      CursorParser cursorParser) {
 
         Cursor cursor = contentResolver.query(
                 InventoryEntry.CONTENT_URI,

@@ -6,7 +6,8 @@ import android.provider.BaseColumns;
 
 public final class InventoryContract {
 
-    private InventoryContract() {}
+    private InventoryContract() {
+    }
 
     /**
      *
@@ -25,7 +26,9 @@ public final class InventoryContract {
 
     public static final class InventoryEntry implements BaseColumns {
 
-        /** The content URI items */
+        /**
+         * The content URI items
+         */
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_INVENTORY);
 
         /**
@@ -48,42 +51,42 @@ public final class InventoryContract {
 
         /**
          * Unique ID number for the inventory (only for use in the database table).
-         *
+         * <p>
          * Type: INTEGER
          */
         public final static String _ID = BaseColumns._ID;
 
         /**
          * Product Name.
-         *
+         * <p>
          * Type: TEXT
          */
         public final static String COLUMN_PRODUCT_NAME = "product_name";
 
         /**
          * Price in cents.
-         *
+         * <p>
          * Type: INTEGER
          */
         public final static String COLUMN_PRICE = "price";
 
         /**
          * Quantity.
-         *
+         * <p>
          * Type: INTEGER
          */
         public final static String COLUMN_QUANTITY = "quantity";
 
         /**
          * Supplier Name.
-         *
+         * <p>
          * Type: TEXT
          */
         public final static String COLUMN_SUPPLIER_NAME = "supplier_name";
 
         /**
          * Supplier Phone Number.
-         *
+         * <p>
          * Type: TEXT
          */
         public final static String COLUMN_SUPPLIER_PHONE_NUMBER = "supplier_phone_number";

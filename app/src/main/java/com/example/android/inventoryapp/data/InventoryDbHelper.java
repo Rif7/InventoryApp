@@ -4,13 +4,17 @@ package com.example.android.inventoryapp.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
+
 /**
  * Database helper for Inventory App.
  */
 public class InventoryDbHelper extends SQLiteOpenHelper {
 
-    /** Name of the database file */
+    /**
+     * Name of the database file
+     */
     private static final String DATABASE_NAME = "storage.db";
 
     /**
@@ -32,7 +36,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
      * public constructor parameters. Used in derived class in tests.
      *
      * @param context of the app
-     * @param name name of DB
+     * @param name    name of DB
      * @param factory Cursor factory
      * @param version DB version
      */
@@ -47,7 +51,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create Inventory table
-        String SQL_CREATE_PETS_TABLE =  "CREATE TABLE " + InventoryEntry.TABLE_NAME + " ("
+        String SQL_CREATE_INVENTORY_TABLE = "CREATE TABLE " + InventoryEntry.TABLE_NAME + " ("
                 + InventoryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + InventoryEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
                 + InventoryEntry.COLUMN_PRICE + " INTEGER NOT NULL, "
@@ -55,7 +59,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
                 + InventoryEntry.COLUMN_SUPPLIER_NAME + " TEXT , "
                 + InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER + " TEXT);";
 
-        db.execSQL(SQL_CREATE_PETS_TABLE);
+        db.execSQL(SQL_CREATE_INVENTORY_TABLE);
     }
 
     /**

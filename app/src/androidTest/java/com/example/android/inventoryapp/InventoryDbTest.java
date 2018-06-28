@@ -88,7 +88,7 @@ public class InventoryDbTest {
 
         // Use default projection in db.query method
         StringCursorParser parser2 = new StringCursorParser();
-        queryInventory( InventoryUtils.prepareProjection(), parser2);
+        queryInventory(InventoryUtils.prepareProjection(), parser2);
 
         Log.d(LOG_TAG, "### queryInventory start #################");
         Log.d(LOG_TAG, parser2.getParsedQuery());
@@ -105,7 +105,7 @@ public class InventoryDbTest {
         boolean isInventoryTable = false;
 
         if (c.moveToFirst()) {
-            while ( !c.isAfterLast() ) {
+            while (!c.isAfterLast()) {
                 String tableName = c.getString(0);
                 if (tableName.equals(InventoryContract.InventoryEntry.TABLE_NAME)) {
                     isInventoryTable = true;
@@ -129,7 +129,7 @@ public class InventoryDbTest {
 
         String dbContent = (parser.getParsedQuery());
         String[] rows = dbContent.split("\n");
-        assertEquals(1 + insertedData,rows.length);
+        assertEquals(1 + insertedData, rows.length);
 
         Log.d(LOG_TAG, "### verifyTableContents start #################");
         Log.d(LOG_TAG, dbContent);

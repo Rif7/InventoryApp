@@ -1,9 +1,7 @@
 package com.example.android.inventoryapp;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.test.InstrumentationRegistry;
 import android.test.ProviderTestCase2;
 import android.test.mock.MockContentResolver;
 import android.util.Log;
@@ -23,8 +21,6 @@ import static com.example.android.inventoryapp.InventoryUtils.getContentValuesFo
 public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> {
     private static final String LOG_TAG = "InventoryProviderTest";
 
-    private Context appContext;
-
     MockContentResolver mockContentResolver;
 
     public InventoryProviderTest() {
@@ -33,7 +29,6 @@ public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> 
 
     @Override
     protected void setUp() throws Exception {
-        appContext = InstrumentationRegistry.getTargetContext();
         super.setUp();
         Log.d(LOG_TAG, "setUp: ");
         mockContentResolver = getMockContentResolver();

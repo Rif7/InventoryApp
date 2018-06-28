@@ -37,7 +37,9 @@ public class InventoryProvider extends ContentProvider {
                 InventoryContract.PATH_INVENTORY + "/#", INVENTORY_ID);
     }
 
-    /** Database helper object */
+    /**
+     * Database helper object
+     */
     protected InventoryDbHelper inventoryDbHelper;
 
     @Override
@@ -61,7 +63,7 @@ public class InventoryProvider extends ContentProvider {
                 break;
             case INVENTORY_ID:
                 selection = InventoryContract.InventoryEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 cursor = database.query(InventoryContract.InventoryEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
@@ -117,7 +119,7 @@ public class InventoryProvider extends ContentProvider {
                 return database.delete(InventoryContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
             case INVENTORY_ID:
                 selection = InventoryContract.InventoryEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return database.delete(InventoryContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
@@ -132,7 +134,7 @@ public class InventoryProvider extends ContentProvider {
                 return updateInventory(uri, contentValues, selection, selectionArgs);
             case INVENTORY_ID:
                 selection = InventoryContract.InventoryEntry._ID + "=?";
-                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateInventory(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not supported for " + uri);
