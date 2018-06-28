@@ -1,21 +1,21 @@
 package com.example.android.inventoryapp;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
-import com.example.android.inventoryapp.data.InventoryDbHelper;
 
 final class InventoryUtils {
 
     /**
-     * Get {@link Inventory} object and store in db.
+     * Get {@link Inventory} object and store in in db, using {@link ContentResolver}.
      */
-    public static long insertInventory(InventoryDbHelper inventoryDbHelper, Inventory inventory) {
+    public static void insertInventory(ContentResolver contentResolver, Inventory inventory) {
         // Insert into database.
-        SQLiteDatabase db = inventoryDbHelper.getWritableDatabase();
-        return db.insert(InventoryEntry.TABLE_NAME, null,
+        Uri uri = contentResolver.insert(InventoryEntry.CONTENT_URI,
                 getContentValuesForInventory(inventory));
     }
 
@@ -34,10 +34,9 @@ final class InventoryUtils {
     /**
      * Default query with all fields.
      */
-    public static void queryInventory(InventoryDbHelper inventoryDbHelper,
-                                      CursorParser cursorParser) {
+    public static String[] prepareProjection() {
 
-        String[] projection = {
+        return new String[]{
                 InventoryEntry._ID,
                 InventoryEntry.COLUMN_PRODUCT_NAME,
                 InventoryEntry.COLUMN_PRICE,
@@ -45,32 +44,35 @@ final class InventoryUtils {
                 InventoryEntry.COLUMN_SUPPLIER_NAME,
                 InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER
         };
-        queryInventory(inventoryDbHelper, projection, cursorParser);
     }
 
     /**
      * Specified query with fields given as parameter.
      *
+     * @param contentResolver {@link ContentResolver} used to create query
      * @param projection   Array of strings from {@link InventoryEntry} column names
      * @param cursorParser Object with needed method to process cursor data
      */
-    private static void queryInventory(InventoryDbHelper inventoryDbHelper, String[] projection,
+    public static void queryInventory(ContentResolver contentResolver, String[] projection,
                                        CursorParser cursorParser) {
-        SQLiteDatabase db = inventoryDbHelper.getReadableDatabase();
 
-        Cursor cursor = db.query(
-                InventoryEntry.TABLE_NAME,
+        Cursor cursor = contentResolver.query(
+                InventoryEntry.CONTENT_URI,
                 projection,
                 null,
                 null,
                 null,
-                null,
                 null);
+
         try {
             cursorParser.parse(cursor);
         } finally {
             cursor.close();
         }
+    }
+
+    public static void deleteAllInventory(ContentResolver contentResolver) {
+        contentResolver.delete(InventoryEntry.CONTENT_URI, null, null);
     }
 
     interface CursorParser {

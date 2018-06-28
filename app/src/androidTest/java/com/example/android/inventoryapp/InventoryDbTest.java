@@ -54,29 +54,29 @@ public class InventoryDbTest {
         dbVersion.setAccessible(true);
 
         assertEquals(db.getVersion(), dbVersion.getInt(null));
-        Log.e(LOG_TAG, db.getPath());
+        Log.d(LOG_TAG, db.getPath());
 
         verifyInventoryTables();
     }
 
     @Test
     public void testAddDisplayInventory() {
-        InventoryUtils.insertInventory(inventoryDbHelper, new Inventory());
-        InventoryUtils.insertInventory(inventoryDbHelper, new Inventory(
+        insertInventory(new Inventory());
+        insertInventory(new Inventory(
                 "LG Leon",
                 9900,
                 null,
                 "LG",
                 "534 5420 353"
         ));
-        InventoryUtils.insertInventory(inventoryDbHelper, new Inventory(
+        insertInventory(new Inventory(
                 "iPhone 6",
                 64900,
                 9,
                 "Apple",
                 null
         ));
-        InventoryUtils.insertInventory(inventoryDbHelper, new Inventory(
+        insertInventory(new Inventory(
                 "Huawei Y6",
                 12900,
                 3,
@@ -88,11 +88,11 @@ public class InventoryDbTest {
 
         // Use default projection in db.query method
         StringCursorParser parser2 = new StringCursorParser();
-        InventoryUtils.queryInventory(inventoryDbHelper, parser2);
+        queryInventory( InventoryUtils.prepareProjection(), parser2);
 
-        Log.e(LOG_TAG, "### queryInventory start #################");
-        Log.e(LOG_TAG, parser2.getParsedQuery());
-        Log.e(LOG_TAG, "### queryInventory end ################");
+        Log.d(LOG_TAG, "### queryInventory start #################");
+        Log.d(LOG_TAG, parser2.getParsedQuery());
+        Log.d(LOG_TAG, "### queryInventory end ################");
 
         assertEquals(parser1.getParsedQuery(), parser2.getParsedQuery());
     }
@@ -115,7 +115,7 @@ public class InventoryDbTest {
             }
         }
         c.close();
-        Log.e(LOG_TAG, tables.toString());
+        Log.d(LOG_TAG, tables.toString());
         assertTrue(isInventoryTable);
     }
 
@@ -131,11 +131,38 @@ public class InventoryDbTest {
         String[] rows = dbContent.split("\n");
         assertEquals(1 + insertedData,rows.length);
 
-        Log.e(LOG_TAG, "### verifyTableContents start #################");
-        Log.e(LOG_TAG, dbContent);
-        Log.e(LOG_TAG, "### verifyTableContents end################");
+        Log.d(LOG_TAG, "### verifyTableContents start #################");
+        Log.d(LOG_TAG, dbContent);
+        Log.d(LOG_TAG, "### verifyTableContents end################");
         c.close();
         return parser;
     }
 
+
+    // Moved functions from InventoryUtils after change in logic to use ContentResolver
+    // instead of InventoryDbHelper
+    private long insertInventory(Inventory inventory) {
+        // Insert into database.
+        SQLiteDatabase db = inventoryDbHelper.getWritableDatabase();
+        return db.insert(InventoryContract.InventoryEntry.TABLE_NAME, null,
+                InventoryUtils.getContentValuesForInventory(inventory));
+    }
+
+    private void queryInventory(String[] projection, InventoryUtils.CursorParser cursorParser) {
+        SQLiteDatabase db = inventoryDbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                InventoryContract.InventoryEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null);
+        try {
+            cursorParser.parse(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
 }
