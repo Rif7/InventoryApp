@@ -75,7 +75,15 @@ public class InventoryProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        final int match = uriMatcher.match(uri);
+        switch (match) {
+            case INVENTORIES:
+                return InventoryContract.InventoryEntry.CONTENT_LIST_TYPE;
+            case INVENTORY_ID:
+                return InventoryContract.InventoryEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+        }
     }
 
     @Nullable
