@@ -71,6 +71,7 @@ public class InventoryProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -107,6 +108,7 @@ public class InventoryProvider extends ContentProvider {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
         }
+        getContext().getContentResolver().notifyChange(uri, null);
         return ContentUris.withAppendedId(uri, id);
     }
 
@@ -114,16 +116,25 @@ public class InventoryProvider extends ContentProvider {
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         SQLiteDatabase database = inventoryDbHelper.getWritableDatabase();
         final int match = uriMatcher.match(uri);
+        int rowsDeleted;
         switch (match) {
             case INVENTORIES:
-                return database.delete(InventoryContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = database.delete(InventoryContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             case INVENTORY_ID:
                 selection = InventoryContract.InventoryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return database.delete(InventoryContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = database.delete(InventoryContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }
+
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsDeleted;
     }
 
     @Override
@@ -147,7 +158,13 @@ public class InventoryProvider extends ContentProvider {
         }
 
         SQLiteDatabase database = inventoryDbHelper.getWritableDatabase();
+        int rowsUpdated = database.update(InventoryContract.InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
 
-        return database.update(InventoryContract.InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
     }
+
 }

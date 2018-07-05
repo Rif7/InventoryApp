@@ -3,9 +3,9 @@ package com.example.android.inventoryapp;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.widget.CursorAdapter;
 
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
@@ -62,25 +62,15 @@ final class InventoryUtils {
     }
 
     /**
-     * Specified query with fields given as parameter.
-     *
-     * @param contentResolver {@link ContentResolver} used to create query
-     * @param projection      Array of strings from {@link InventoryEntry} column names
-     * @param cursorParser    Object with needed method to process cursor data
+     * Create {@link CursorLoader} for Inventory DB with given projection
      */
-    public static void queryInventory(ContentResolver contentResolver, String[] projection,
-                                      CursorParser cursorParser) {
-
-        Cursor cursor = contentResolver.query(
+    public static CursorLoader getCursorLoader(Context context, String[] projection) {
+        return new CursorLoader(context,
                 InventoryEntry.CONTENT_URI,
                 projection,
                 null,
                 null,
-                null,
                 null);
-
-        cursorParser.parse(cursor);
-
     }
 
     public static void deleteAllInventory(ContentResolver contentResolver) {
@@ -138,27 +128,6 @@ class StringCursorParser implements InventoryUtils.CursorParser {
     }
 }
 
-/**
- * Create and populate {@link InventoryCursorAdapter} from cursor
- * Does not close the cursor.
- */
-class CursorAdapterParser implements InventoryUtils.CursorParser {
-    private Context context;
-    private CursorAdapter inventoryCursorAdapter;
-
-    CursorAdapterParser(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public void parse(Cursor cursor) {
-        inventoryCursorAdapter = new InventoryCursorAdapter(context, cursor);
-    }
-
-    public CursorAdapter getAdapter() {
-        return inventoryCursorAdapter;
-    }
-}
 
 
 
