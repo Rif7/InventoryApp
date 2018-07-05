@@ -90,5 +90,28 @@ public final class InventoryContract {
          * Type: TEXT
          */
         public final static String COLUMN_SUPPLIER_PHONE_NUMBER = "supplier_phone_number";
+
+        public static boolean isValidPrice(int price) {
+            int result = 1;
+            result *= checkNumberAboveZero(price);
+            return isValid(result);
+        }
+
+        public static boolean isValidQuantity(int quantity) {
+            int result = 1;
+            result *= checkNumberAboveZero(quantity);
+            return isValid(result);
+        }
+
+        private static int VALID = 1;
+        private static int INVALID = 0;
+
+        private static boolean isValid(int result) {
+            return result == 1;
+        }
+
+        private static int checkNumberAboveZero(int number) {
+            return (number < 0) ? INVALID : VALID;
+        }
     }
 }
