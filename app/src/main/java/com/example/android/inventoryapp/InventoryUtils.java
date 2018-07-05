@@ -2,8 +2,10 @@ package com.example.android.inventoryapp;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.widget.CursorAdapter;
 
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
@@ -47,6 +49,19 @@ final class InventoryUtils {
     }
 
     /**
+     * Query for {@link MainActivity}
+     */
+    public static String[] prepareMainActivityProjection() {
+
+        return new String[]{
+                InventoryEntry._ID,
+                InventoryEntry.COLUMN_PRODUCT_NAME,
+                InventoryEntry.COLUMN_PRICE,
+                InventoryEntry.COLUMN_QUANTITY
+        };
+    }
+
+    /**
      * Specified query with fields given as parameter.
      *
      * @param contentResolver {@link ContentResolver} used to create query
@@ -64,11 +79,8 @@ final class InventoryUtils {
                 null,
                 null);
 
-        try {
-            cursorParser.parse(cursor);
-        } finally {
-            cursor.close();
-        }
+        cursorParser.parse(cursor);
+
     }
 
     public static void deleteAllInventory(ContentResolver contentResolver) {
@@ -77,7 +89,7 @@ final class InventoryUtils {
 
     interface CursorParser {
         /**
-         * Parse and process data.
+         * Parse and process data. Depending of implementation can close the cursor
          *
          * @param cursor as db query result
          */
@@ -88,13 +100,21 @@ final class InventoryUtils {
 
 /**
  * Default class for handling data from cursor. Proper for testing or showing results in single text.
- * Does not close the cursor.
+ * Close the cursor.
  */
 class StringCursorParser implements InventoryUtils.CursorParser {
     private String parsedQuery;
 
     @Override
     public void parse(Cursor cursor) {
+        try {
+            parseToString(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
+
+    private void parseToString(Cursor cursor) {
         StringBuilder s = new StringBuilder();
         if (cursor.moveToFirst()) {
             String[] columnNames = cursor.getColumnNames();
@@ -115,6 +135,28 @@ class StringCursorParser implements InventoryUtils.CursorParser {
 
     public String getParsedQuery() {
         return parsedQuery;
+    }
+}
+
+/**
+ * Create and populate {@link InventoryCursorAdapter} from cursor
+ * Does not close the cursor.
+ */
+class CursorAdapterParser implements InventoryUtils.CursorParser {
+    private Context context;
+    private CursorAdapter inventoryCursorAdapter;
+
+    CursorAdapterParser(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void parse(Cursor cursor) {
+        inventoryCursorAdapter = new InventoryCursorAdapter(context, cursor);
+    }
+
+    public CursorAdapter getAdapter() {
+        return inventoryCursorAdapter;
     }
 }
 

@@ -3,7 +3,7 @@ package com.example.android.inventoryapp;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +14,12 @@ public class MainActivity extends AppCompatActivity {
         updateList();
     }
 
-    // Temporary methods for testing
+    private void updateList() {
+        ListView listView = (ListView) findViewById(R.id.list);
+        CursorAdapterParser cursorParser = new CursorAdapterParser(this);
+        InventoryUtils.queryInventory(getContentResolver(), InventoryUtils.prepareMainActivityProjection(), cursorParser);
+        listView.setAdapter(cursorParser.getAdapter());
+    }
 
     public void addData(View view) {
         InventoryUtils.insertInventory(getContentResolver(), new Inventory());
@@ -26,11 +31,4 @@ public class MainActivity extends AppCompatActivity {
         updateList();
     }
 
-    private void updateList() {
-        TextView textView = (TextView) findViewById(R.id.db_content);
-        StringCursorParser parser = new StringCursorParser();
-        InventoryUtils.queryInventory(getContentResolver(), InventoryUtils.prepareProjection(),
-                parser);
-        textView.setText(parser.getParsedQuery());
-    }
 }
