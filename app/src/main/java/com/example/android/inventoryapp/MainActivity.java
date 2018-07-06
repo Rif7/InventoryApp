@@ -1,12 +1,18 @@
 package com.example.android.inventoryapp;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -28,6 +34,16 @@ public class MainActivity extends AppCompatActivity implements
 
         inventoryCursorAdapter = new InventoryCursorAdapter(this, null);
         listView.setAdapter(inventoryCursorAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, InventoryActivity.class);
+                Uri currentPetUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
+                intent.setData(currentPetUri);
+                startActivity(intent);
+            }
+        });
+
 
         getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
@@ -43,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return InventoryUtils.getCursorLoader(this,
-                InventoryUtils.prepareMainActivityProjection());
+                InventoryUtils.prepareMainActivityProjection(), null);
     }
 
     @Override

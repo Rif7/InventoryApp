@@ -18,10 +18,10 @@ final class InventoryUtils {
     public static void insertInventory(ContentResolver contentResolver, Inventory inventory) {
         // Insert into database.
         Uri uri = contentResolver.insert(InventoryEntry.CONTENT_URI,
-                getContentValuesForInventory(inventory));
+                getContentValuesFromInventory(inventory));
     }
 
-    public static ContentValues getContentValuesForInventory(Inventory inventory) {
+    public static ContentValues getContentValuesFromInventory(Inventory inventory) {
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, inventory.getProductName());
         values.put(InventoryEntry.COLUMN_PRICE, inventory.getPrice());
@@ -31,6 +31,22 @@ final class InventoryUtils {
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, inventory.getSupplierName());
         values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER, inventory.getSupplierPhoneNumber());
         return values;
+    }
+
+    public static Inventory getInventoryFromSingleRowCursor(Cursor cursor) {
+        if (cursor == null || cursor.getCount() < 1) {
+            return null;
+        }
+        Inventory inv = null;
+        if (cursor.moveToFirst()) {
+            inv = new Inventory(
+                    cursor.getString(cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_NAME)),
+                    cursor.getInt(cursor.getColumnIndex(InventoryEntry.COLUMN_PRICE)),
+                    cursor.getInt(cursor.getColumnIndex(InventoryEntry.COLUMN_QUANTITY)),
+                    cursor.getString(cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER_NAME)),
+                    cursor.getString(cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER)));
+        }
+        return inv;
     }
 
     /**
@@ -64,9 +80,9 @@ final class InventoryUtils {
     /**
      * Create {@link CursorLoader} for Inventory DB with given projection
      */
-    public static CursorLoader getCursorLoader(Context context, String[] projection) {
+    public static CursorLoader getCursorLoader(Context context, String[] projection, Uri uri) {
         return new CursorLoader(context,
-                InventoryEntry.CONTENT_URI,
+                uri == null ? InventoryEntry.CONTENT_URI :uri,
                 projection,
                 null,
                 null,

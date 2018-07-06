@@ -41,6 +41,26 @@ class Inventory {
         return supplierPhoneNumber;
     }
 
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public void setSupplierPhoneNumber(String supplierPhoneNumber) {
+        this.supplierPhoneNumber = supplierPhoneNumber;
+    }
+
     private void setDummyData() {
         productName = "NOKIA 8";
         price = 39900;

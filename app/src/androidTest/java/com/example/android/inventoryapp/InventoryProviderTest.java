@@ -11,7 +11,7 @@ import com.example.android.inventoryapp.data.InventoryProvider;
 
 import org.junit.Test;
 
-import static com.example.android.inventoryapp.InventoryUtils.getContentValuesForInventory;
+import static com.example.android.inventoryapp.InventoryUtils.getContentValuesFromInventory;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -75,7 +75,7 @@ public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> 
         insertSomeData();
         Uri secondItemURI = Uri.withAppendedPath(InventoryContract.InventoryEntry.CONTENT_URI, "2");
         int affectedRows = mockContentResolver.update(secondItemURI,
-                getContentValuesForInventory(new Inventory(
+                getContentValuesFromInventory(new Inventory(
                         "Sony Xperia",
                         44400,
                         1,
@@ -127,22 +127,22 @@ public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> 
     private void insertSomeData() {
         Uri uri = InventoryContract.InventoryEntry.CONTENT_URI;
 
-        mockContentResolver.insert(uri, getContentValuesForInventory(new Inventory()));
-        mockContentResolver.insert(uri, getContentValuesForInventory(new Inventory(
+        mockContentResolver.insert(uri, getContentValuesFromInventory(new Inventory()));
+        mockContentResolver.insert(uri, getContentValuesFromInventory(new Inventory(
                 "LG Leon",
                 9900,
                 null,
                 "LG",
                 "534 5420 353"
         )));
-        mockContentResolver.insert(uri, getContentValuesForInventory(new Inventory(
+        mockContentResolver.insert(uri, getContentValuesFromInventory(new Inventory(
                 "iPhone 6",
                 64900,
                 9,
                 "Apple",
                 null
         )));
-        mockContentResolver.insert(uri, getContentValuesForInventory(new Inventory(
+        mockContentResolver.insert(uri, getContentValuesFromInventory(new Inventory(
                 "Huawei Y6",
                 12900,
                 3,

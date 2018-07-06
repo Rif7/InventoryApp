@@ -145,7 +145,7 @@ public class InventoryDbTest {
         // Insert into database.
         SQLiteDatabase db = inventoryDbHelper.getWritableDatabase();
         return db.insert(InventoryContract.InventoryEntry.TABLE_NAME, null,
-                InventoryUtils.getContentValuesForInventory(inventory));
+                InventoryUtils.getContentValuesFromInventory(inventory));
     }
 
     private void queryInventory(String[] projection, InventoryUtils.CursorParser cursorParser) {
