@@ -1,35 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <!---  Temp GUI-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="ADD DATA"
-            android:onClick="addData"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="RESET DATA"
-            android:onClick="resetData"/>
-
-    </LinearLayout>
-
-    <!---  Temp GUI -->
 
     <ListView
         android:id="@+id/list"
@@ -50,4 +25,12 @@
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/add_data_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ADD DATA"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

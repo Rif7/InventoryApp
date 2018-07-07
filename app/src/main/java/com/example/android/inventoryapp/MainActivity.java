@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
@@ -44,16 +45,16 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
+        Button addButton = (Button) findViewById(R.id.add_data_btn);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, InventoryActivity.class);
+                startActivity(intent);
+            }
+        });
 
         getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
-    }
-
-    public void addData(View view) {
-        InventoryUtils.insertInventory(getContentResolver(), new Inventory());
-    }
-
-    public void resetData(View view) {
-        InventoryUtils.deleteAllInventory(getContentResolver());
     }
 
     @Override

@@ -30,8 +30,8 @@ public class InventoryActivity extends AppCompatActivity implements
     private EditText nameEditText;
     private EditText priceEditText;
     private EditText quantityEditText;
-    private EditText suplierNameEditText;
-    private EditText suplierPhoneEditText;
+    private EditText supplierNameEditText;
+    private EditText supplierPhoneEditText;
 
     private Button quantityMinusButton;
     private Button quantityPlusButton;
@@ -49,10 +49,14 @@ public class InventoryActivity extends AppCompatActivity implements
 
         if (currentInventoryUri == null) {
             setTitle("Add Product");
+            inventory = new Inventory();
+            deleteButton.setVisibility(View.GONE);
         } else {
             getLoaderManager().initLoader(EXISTING_INVENTORY_LOADER, null, this);
-            inventoryHasChanged = false;
         }
+
+        createTextWatchers();
+        inventoryHasChanged = false;
     }
 
     private void initFieldsViews() {
@@ -76,8 +80,8 @@ public class InventoryActivity extends AppCompatActivity implements
             }
         });
 
-        suplierNameEditText = (EditText) findViewById(R.id.inventory_supplier_name);
-        suplierPhoneEditText = (EditText) findViewById(R.id.inventory_supplier_phone);
+        supplierNameEditText = (EditText) findViewById(R.id.inventory_supplier_name);
+        supplierPhoneEditText = (EditText) findViewById(R.id.inventory_supplier_phone);
 
         quantityMinusButton = (Button) findViewById(R.id.inventory_quantity_minus_btn);
         quantityMinusButton.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +127,8 @@ public class InventoryActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 if (currentInventoryUri != null) {
                     update();
+                } else {
+                    insert();
                 }
             }
         });
@@ -151,8 +157,8 @@ public class InventoryActivity extends AppCompatActivity implements
             inventory.setProductName(nameEditText.getText().toString());
             inventory.setPrice(priceEditText.getText().toString());
             inventory.setQuantity(quantityEditText.getText().toString());
-            inventory.setSupplierName(suplierNameEditText.getText().toString());
-            inventory.setSupplierPhoneNumber(suplierPhoneEditText.getText().toString());
+            inventory.setSupplierName(supplierNameEditText.getText().toString());
+            inventory.setSupplierPhoneNumber(supplierPhoneEditText.getText().toString());
 
             int rowsAffected = getContentResolver().update(currentInventoryUri,
                     InventoryUtils.getContentValuesFromInventory(inventory),
@@ -166,7 +172,29 @@ public class InventoryActivity extends AppCompatActivity implements
         }
     }
 
-    private void createTextWatcher() {
+    private void insert() {
+        try {
+            inventory.setProductName(nameEditText.getText().toString());
+            inventory.setPrice(priceEditText.getText().toString());
+            inventory.setQuantity(quantityEditText.getText().toString());
+            inventory.setSupplierName(supplierNameEditText.getText().toString());
+            inventory.setSupplierPhoneNumber(supplierPhoneEditText.getText().toString());
+
+            Uri uri = InventoryUtils.insertInventory(getContentResolver(), inventory);
+
+            if (uri == null) {
+                throw new Exception("Failed to add Inventory");
+            }
+
+            showToast("Added Product " + inventory.getProductName());
+            finish();
+        } catch (Exception e) {
+            showToast(e.getMessage());
+        }
+
+    }
+
+    private void createTextWatchers() {
         textWatcher = new TextWatcher() {
             String prevText;
 
@@ -191,8 +219,8 @@ public class InventoryActivity extends AppCompatActivity implements
         nameEditText.addTextChangedListener(textWatcher);
         priceEditText.addTextChangedListener(textWatcher);
         quantityEditText.addTextChangedListener(textWatcher);
-        suplierNameEditText.addTextChangedListener(textWatcher);
-        suplierPhoneEditText.addTextChangedListener(textWatcher);
+        supplierNameEditText.addTextChangedListener(textWatcher);
+        supplierPhoneEditText.addTextChangedListener(textWatcher);
     }
 
     private void showToast(String message) {
@@ -235,15 +263,12 @@ public class InventoryActivity extends AppCompatActivity implements
             priceEditText.setText(String.valueOf(inventory.getFloatPrice()));
             quantityEditText.setText(String.valueOf(inventory.getQuantity()));
             if (inventory.getSupplierName() != null) {
-                suplierNameEditText.setText(inventory.getSupplierName());
+                supplierNameEditText.setText(inventory.getSupplierName());
             }
             if (inventory.getSupplierPhoneNumber() != null) {
-                suplierPhoneEditText.setText(inventory.getSupplierPhoneNumber());
+                supplierPhoneEditText.setText(inventory.getSupplierPhoneNumber());
             }
         }
-
-        createTextWatcher();
-
     }
 
     @Override
@@ -251,8 +276,8 @@ public class InventoryActivity extends AppCompatActivity implements
         nameEditText.setText("");
         priceEditText.setText("");
         quantityEditText.setText("");
-        suplierNameEditText.setText("");
-        suplierPhoneEditText.setText("");
+        supplierNameEditText.setText("");
+        supplierPhoneEditText.setText("");
     }
 
     private void showUnsavedChangesDialog(

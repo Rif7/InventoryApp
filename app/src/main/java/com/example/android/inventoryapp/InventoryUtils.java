@@ -15,9 +15,9 @@ final class InventoryUtils {
     /**
      * Get {@link Inventory} object and store in in db, using {@link ContentResolver}.
      */
-    public static void insertInventory(ContentResolver contentResolver, Inventory inventory) {
+    public static Uri insertInventory(ContentResolver contentResolver, Inventory inventory) {
         // Insert into database.
-        Uri uri = contentResolver.insert(InventoryEntry.CONTENT_URI,
+        return contentResolver.insert(InventoryEntry.CONTENT_URI,
                 getContentValuesFromInventory(inventory));
     }
 

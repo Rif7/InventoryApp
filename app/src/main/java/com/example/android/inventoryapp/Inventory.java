@@ -10,7 +10,12 @@ class Inventory {
     private String supplierPhoneNumber;
 
     Inventory() {
-        setDummyData();
+    }
+
+    Inventory(boolean setDummyData) {
+        if (setDummyData) {
+            setDummyData();
+        }
     }
 
     Inventory(String productName, Integer price, Integer quantity, String supplierName, String supplierPhoneNumber) {
@@ -46,7 +51,7 @@ class Inventory {
     }
 
     public void setProductName(String productName) {
-        if (productName == null) {
+        if (productName == null || productName.equals("")) {
             throw new IllegalArgumentException("Product Name is not valid");
         }
         this.productName = productName;
@@ -61,7 +66,7 @@ class Inventory {
             float realPrice = Float.valueOf(price);
             this.price = (int) Math.floor(realPrice*100);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Quantity is not a Number");
+            throw new IllegalArgumentException("Price is invalid");
         }
     }
 
@@ -83,15 +88,21 @@ class Inventory {
     }
 
     public void incrementQuantity() throws IllegalArgumentException {
+        if (quantity == null) {
+            quantity = 0;
+        }
         setQuantity(quantity + 1);
     }
 
     public void decrementQuantity() throws IllegalArgumentException {
+        if (quantity == null) {
+            quantity = 0;
+        }
         setQuantity(quantity - 1);
     }
 
     public void setSupplierName(String supplierName) {
-        if (supplierName == null) {
+        if (supplierName == null || supplierName.equals("")) {
             throw new IllegalArgumentException("Supplier Name is not valid");
         }
         this.supplierName = supplierName;

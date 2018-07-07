@@ -127,7 +127,7 @@ public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> 
     private void insertSomeData() {
         Uri uri = InventoryContract.InventoryEntry.CONTENT_URI;
 
-        mockContentResolver.insert(uri, getContentValuesFromInventory(new Inventory()));
+        mockContentResolver.insert(uri, getContentValuesFromInventory(new Inventory(true)));
         mockContentResolver.insert(uri, getContentValuesFromInventory(new Inventory(
                 "LG Leon",
                 9900,

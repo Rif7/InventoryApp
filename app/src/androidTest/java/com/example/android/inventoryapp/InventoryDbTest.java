@@ -61,7 +61,7 @@ public class InventoryDbTest {
 
     @Test
     public void testAddDisplayInventory() {
-        insertInventory(new Inventory());
+        insertInventory(new Inventory(true));
         insertInventory(new Inventory(
                 "LG Leon",
                 9900,
