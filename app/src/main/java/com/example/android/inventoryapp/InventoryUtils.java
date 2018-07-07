@@ -33,6 +33,12 @@ final class InventoryUtils {
         return values;
     }
 
+    public static ContentValues getContentValuesForSingleQuantity(Inventory inventory) {
+        ContentValues values = new ContentValues();
+        values.put(InventoryEntry.COLUMN_QUANTITY, inventory.getQuantity());
+        return values;
+    }
+
     public static Inventory getInventoryFromSingleRowCursor(Cursor cursor) {
         if (cursor == null || cursor.getCount() < 1) {
             return null;
@@ -76,6 +82,17 @@ final class InventoryUtils {
                 InventoryEntry.COLUMN_QUANTITY
         };
     }
+
+//    /**
+//     * Query for sale Button in {@link MainActivity}
+//     */
+//    public static String[] prepareDecrementQuantityProjection() {
+//
+//        return new String[]{
+//                InventoryEntry._ID,
+//                InventoryEntry.COLUMN_QUANTITY
+//        };
+//    }
 
     /**
      * Create {@link CursorLoader} for Inventory DB with given projection

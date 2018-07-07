@@ -1,5 +1,7 @@
 package com.example.android.inventoryapp;
 
+import com.example.android.inventoryapp.data.InventoryContract;
+
 class Inventory {
     private String productName;
     // Use Integer object instead of raw int to distinguish null value
@@ -58,20 +60,23 @@ class Inventory {
     }
 
     public void setPrice(Integer price) {
+        if (!InventoryContract.InventoryEntry.isValidPrice(price)) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
         this.price = price;
     }
 
     public void setPrice(String price) {
         try {
             float realPrice = Float.valueOf(price);
-            this.price = (int) Math.floor(realPrice*100);
+            setPrice((int) Math.floor(realPrice*100));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Price is invalid");
         }
     }
 
     public void setQuantity(Integer quantity) throws IllegalArgumentException {
-        if (quantity < 0) {
+        if (!InventoryContract.InventoryEntry.isValidQuantity(quantity)) {
             throw new IllegalArgumentException("Quantity cannot be negative");
         }
         this.quantity = quantity;

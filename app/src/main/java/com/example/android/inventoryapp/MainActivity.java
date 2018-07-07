@@ -32,18 +32,12 @@ public class MainActivity extends AppCompatActivity implements
         ListView listView = (ListView) findViewById(R.id.list);
         View emptyView = findViewById(R.id.empty_view);
         listView.setEmptyView(emptyView);
+        listView.setFocusable(true);
+        listView.setFocusableInTouchMode(true);
+        listView.setClickable(true);
 
         inventoryCursorAdapter = new InventoryCursorAdapter(this, null);
         listView.setAdapter(inventoryCursorAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, InventoryActivity.class);
-                Uri currentInventoryUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
-                intent.setData(currentInventoryUri);
-                startActivity(intent);
-            }
-        });
 
         Button addButton = (Button) findViewById(R.id.add_data_btn);
         addButton.setOnClickListener(new View.OnClickListener() {

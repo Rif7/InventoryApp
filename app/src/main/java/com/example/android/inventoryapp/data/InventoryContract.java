@@ -107,7 +107,7 @@ public final class InventoryContract {
         private static int INVALID = 0;
 
         private static boolean isValid(int result) {
-            return result == 1;
+            return result == VALID;
         }
 
         private static int checkNumberAboveZero(int number) {
