@@ -1,9 +1,8 @@
 package com.example.android.inventoryapp;
 
-import java.lang.Math;
-import java.security.InvalidParameterException;
-
+import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -52,7 +51,6 @@ public class InventoryActivity extends AppCompatActivity implements
             setTitle("Add Product");
         } else {
             getLoaderManager().initLoader(EXISTING_INVENTORY_LOADER, null, this);
-            createTextWatcher();
             inventoryHasChanged = false;
         }
     }
@@ -114,7 +112,7 @@ public class InventoryActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 if (currentInventoryUri != null) {
-                    delete();
+                    showDeleteConfirmationDialog();
                 }
             }
         });
@@ -143,6 +141,7 @@ public class InventoryActivity extends AppCompatActivity implements
             } else {
                 Toast.makeText(this, "Deleted " + productName,
                         Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
@@ -169,19 +168,23 @@ public class InventoryActivity extends AppCompatActivity implements
 
     private void createTextWatcher() {
         textWatcher = new TextWatcher() {
+            String prevText;
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                prevText = charSequence.toString();
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                if (!prevText.equals(charSequence.toString())) {
+                    inventoryHasChanged = true;
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                inventoryHasChanged = true;
+
             }
         };
 
@@ -201,8 +204,19 @@ public class InventoryActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                if (!inventoryHasChanged) {
                     NavUtils.navigateUpFromSameTask(InventoryActivity.this);
                     return true;
+                }
+                DialogInterface.OnClickListener discardButtonClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                NavUtils.navigateUpFromSameTask(InventoryActivity.this);
+                            }
+                        };
+                showUnsavedChangesDialog(discardButtonClickListener);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -228,6 +242,8 @@ public class InventoryActivity extends AppCompatActivity implements
             }
         }
 
+        createTextWatcher();
+
     }
 
     @Override
@@ -237,6 +253,43 @@ public class InventoryActivity extends AppCompatActivity implements
         quantityEditText.setText("");
         suplierNameEditText.setText("");
         suplierPhoneEditText.setText("");
+    }
+
+    private void showUnsavedChangesDialog(
+            DialogInterface.OnClickListener discardButtonClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to discard your changes?");
+        builder.setPositiveButton("Discard", discardButtonClickListener);
+        builder.setNegativeButton("Keep Editing", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Delete this inventory?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                delete();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }

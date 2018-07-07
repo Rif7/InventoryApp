@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, InventoryActivity.class);
-                Uri currentPetUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
-                intent.setData(currentPetUri);
+                Uri currentInventoryUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
+                intent.setData(currentInventoryUri);
                 startActivity(intent);
             }
         });
