@@ -20,7 +20,7 @@
             android:id="@+id/empty_view_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nothing in store"
+            android:text="@string/nothing_in_store"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
@@ -29,7 +29,7 @@
         android:id="@+id/add_data_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ADD DATA"
+        android:text="@string/add_data"
         android:layout_alignParentBottom="true"/>
 
 

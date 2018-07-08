@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class InventoryProvider extends ContentProvider {
 
-    public static final String LOG_TAG = InventoryProvider.class.getSimpleName();
+    private static final String LOG_TAG = InventoryProvider.class.getSimpleName();
 
     /**
      * URI matcher const for the whole inventory table
@@ -40,7 +40,7 @@ public class InventoryProvider extends ContentProvider {
     /**
      * Database helper object
      */
-    protected InventoryDbHelper inventoryDbHelper;
+    private InventoryDbHelper inventoryDbHelper;
 
     @Override
     public boolean onCreate() {

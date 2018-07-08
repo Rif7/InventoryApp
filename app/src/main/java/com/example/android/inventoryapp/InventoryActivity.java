@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.security.InvalidParameterException;
 
 public class InventoryActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
@@ -35,14 +34,7 @@ public class InventoryActivity extends AppCompatActivity implements
     private EditText supplierNameEditText;
     private EditText supplierPhoneEditText;
 
-    private Button quantityMinusButton;
-    private Button quantityPlusButton;
-    private Button callButton;
-
     private Button deleteButton;
-    private Button saveButton;
-
-    private TextWatcher textWatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +78,7 @@ public class InventoryActivity extends AppCompatActivity implements
         supplierNameEditText = (EditText) findViewById(R.id.inventory_supplier_name);
         supplierPhoneEditText = (EditText) findViewById(R.id.inventory_supplier_phone);
 
-        quantityMinusButton = (Button) findViewById(R.id.inventory_quantity_minus_btn);
+        Button quantityMinusButton = (Button) findViewById(R.id.inventory_quantity_minus_btn);
         quantityMinusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +92,7 @@ public class InventoryActivity extends AppCompatActivity implements
             }
         });
 
-        quantityPlusButton = (Button) findViewById(R.id.inventory_quantity_plus_but);
+        Button quantityPlusButton = (Button) findViewById(R.id.inventory_quantity_plus_but);
         quantityPlusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +106,7 @@ public class InventoryActivity extends AppCompatActivity implements
             }
         });
 
-        callButton = (Button) findViewById(R.id.inventory_supplier_call_btn);
+        Button callButton = (Button) findViewById(R.id.inventory_supplier_call_btn);
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +135,7 @@ public class InventoryActivity extends AppCompatActivity implements
             }
         });
 
-        saveButton = (Button) findViewById(R.id.inventory_save_btn);
+        Button saveButton = (Button) findViewById(R.id.inventory_save_btn);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,7 +209,7 @@ public class InventoryActivity extends AppCompatActivity implements
     }
 
     private void createTextWatchers() {
-        textWatcher = new TextWatcher() {
+        TextWatcher textWatcher = new TextWatcher() {
             String prevText;
 
             @Override

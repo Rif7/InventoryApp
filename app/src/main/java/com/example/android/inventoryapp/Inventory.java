@@ -63,7 +63,7 @@ class Inventory {
         this.productName = productName.trim();
     }
 
-    public void setPrice(Integer price) {
+    private void setPrice(Integer price) {
         if (!InventoryContract.InventoryEntry.isValidPrice(price)) {
             throw new IllegalArgumentException("Quantity cannot be negative");
         }
@@ -79,7 +79,7 @@ class Inventory {
         }
     }
 
-    public void setQuantity(Integer quantity) throws IllegalArgumentException {
+    private void setQuantity(Integer quantity) throws IllegalArgumentException {
         if (!InventoryContract.InventoryEntry.isValidQuantity(quantity)) {
             throw new IllegalArgumentException("Quantity cannot be negative");
         }
