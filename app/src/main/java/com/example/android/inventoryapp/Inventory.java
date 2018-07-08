@@ -56,7 +56,7 @@ class Inventory {
         if (productName == null || productName.equals("")) {
             throw new IllegalArgumentException("Product Name is not valid");
         }
-        this.productName = productName;
+        this.productName = productName.trim();
     }
 
     public void setPrice(Integer price) {
@@ -68,7 +68,7 @@ class Inventory {
 
     public void setPrice(String price) {
         try {
-            float realPrice = Float.valueOf(price);
+            float realPrice = Float.valueOf(price.trim());
             setPrice((int) Math.floor(realPrice*100));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Price is invalid");
@@ -85,7 +85,7 @@ class Inventory {
     public void setQuantity(String quantity) throws IllegalArgumentException {
         int number;
         try {
-            number = Integer.valueOf(quantity);
+            number = Integer.valueOf(quantity.trim());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Quantity is not a Natural Number");
         }
@@ -110,14 +110,19 @@ class Inventory {
         if (supplierName == null || supplierName.equals("")) {
             throw new IllegalArgumentException("Supplier Name is not valid");
         }
-        this.supplierName = supplierName;
+        this.supplierName = supplierName.trim();
     }
 
     public void setSupplierPhoneNumber(String supplierPhoneNumber) {
         if (supplierPhoneNumber == null || supplierPhoneNumber.equals("")) {
             throw new IllegalArgumentException("Supplier Phone Number is not valid");
         }
-        this.supplierPhoneNumber = supplierPhoneNumber;
+        String phoneNumber = supplierPhoneNumber.trim();
+        phoneNumber = phoneNumber.replace(" ", "");
+        if (!phoneNumber.matches("[/+]?[0-9]+")) {
+            throw new IllegalArgumentException("Supplier Phone should only contains numbers and can start with prefix(+)");
+        }
+        this.supplierPhoneNumber = phoneNumber;
     }
 
     private void setDummyData() {

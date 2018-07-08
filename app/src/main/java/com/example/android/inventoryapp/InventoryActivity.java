@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.security.InvalidParameterException;
+
 public class InventoryActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -35,6 +37,7 @@ public class InventoryActivity extends AppCompatActivity implements
 
     private Button quantityMinusButton;
     private Button quantityPlusButton;
+    private Button callButton;
 
     private Button deleteButton;
     private Button saveButton;
@@ -110,6 +113,25 @@ public class InventoryActivity extends AppCompatActivity implements
                 }
             }
         });
+
+        callButton = (Button) findViewById(R.id.inventory_supplier_call_btn);
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    inventory.setSupplierPhoneNumber(supplierPhoneEditText.getText().toString());
+                } catch (IllegalArgumentException e) {
+                    showToast(e.getMessage());
+                    return;
+                }
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + inventory.getSupplierPhoneNumber()));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
+
 
         deleteButton = (Button) findViewById(R.id.inventory_delete_btn);
         deleteButton.setOnClickListener(new View.OnClickListener() {
