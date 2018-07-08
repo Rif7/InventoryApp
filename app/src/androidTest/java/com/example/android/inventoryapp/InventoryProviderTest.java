@@ -21,7 +21,7 @@ import static com.example.android.inventoryapp.InventoryUtils.getContentValuesFr
 public class InventoryProviderTest extends ProviderTestCase2<InventoryProvider> {
     private static final String LOG_TAG = "InventoryProviderTest";
 
-    MockContentResolver mockContentResolver;
+    private MockContentResolver mockContentResolver;
 
     public InventoryProviderTest() {
         super(InventoryProvider.class, InventoryContract.CONTENT_AUTHORITY);

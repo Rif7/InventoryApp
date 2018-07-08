@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
     private static final int INVENTORY_LOADER = 0;
 
-    InventoryCursorAdapter inventoryCursorAdapter;
+    private InventoryCursorAdapter inventoryCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

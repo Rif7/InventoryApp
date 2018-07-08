@@ -17,8 +17,8 @@ import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class InventoryCursorAdapter extends CursorAdapter {
-    Context context;
+class InventoryCursorAdapter extends CursorAdapter {
+    private final Context context;
 
     public InventoryCursorAdapter(Context context, Cursor c) {
         super(context, c, 0 );

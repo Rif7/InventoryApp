@@ -7,7 +7,7 @@ import com.example.android.inventoryapp.data.InventoryDbHelper;
 /**
  * Helper class used for creating test database.
  */
-public class InventoryTestDbHelper extends InventoryDbHelper {
+class InventoryTestDbHelper extends InventoryDbHelper {
     public static final String DATABASE_NAME = "test_storage.db";
 
     public InventoryTestDbHelper(Context context) {

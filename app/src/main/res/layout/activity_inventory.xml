@@ -20,7 +20,7 @@
             <TextView
                 android:layout_width="@dimen/inventory_label_size"
                 android:layout_height="wrap_content"
-                android:text="Product"
+                android:text="@string/product"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/item_smaller_label" />
 
@@ -28,7 +28,7 @@
                 android:id="@+id/inventory_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name"
+                android:hint="@string/name"
                 android:inputType="text" />
 
         </LinearLayout>
@@ -41,7 +41,7 @@
             <TextView
                 android:layout_width="@dimen/inventory_label_size"
                 android:layout_height="wrap_content"
-                android:text="Price"
+                android:text="@string/price"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/item_smaller_label" />
 
@@ -49,7 +49,7 @@
                 android:id="@+id/inventory_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="0.00"
+                android:hint="@string/_0_00"
                 android:inputType="numberDecimal" />
 
         </LinearLayout>
@@ -62,7 +62,7 @@
             <TextView
                 android:layout_width="@dimen/inventory_label_size"
                 android:layout_height="wrap_content"
-                android:text="Quantity"
+                android:text="@string/quantity"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/item_smaller_label" />
 
@@ -71,14 +71,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/color_minus_btn"
-                android:text="-" />
+                android:text="@string/minus" />
 
             <EditText
                 android:id="@+id/inventory_quantity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="0"
+                android:hint="@string/_0"
                 android:inputType="number" />
 
             <Button
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/color_plus_btn"
-                android:text="+" />
+                android:text="@string/plus" />
 
         </LinearLayout>
 
@@ -99,7 +99,7 @@
                 android:layout_width="@dimen/inventory_label_size"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Provider"
+                android:text="@string/provider"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/item_smaller_label" />
 
@@ -112,7 +112,7 @@
                     android:id="@+id/inventory_supplier_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Supplier Name"
+                    android:hint="@string/supplier_name"
                     android:inputType="text" />
 
                 <LinearLayout
@@ -125,7 +125,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Supplier Phone"
+                        android:hint="@string/supplier_phone"
                         android:inputType="phone" />
 
                     <Button
@@ -133,7 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/color_call_btn"
-                        android:text="call" />
+                        android:text="@string/call" />
 
                 </LinearLayout>
 
@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/color_delete_btn"
-            android:text="delete" />
+            android:text="@string/delete" />
 
         <Button
             android:id="@+id/inventory_save_btn"
@@ -164,7 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/color_save_btn"
-            android:text="save" />
+            android:text="@string/save" />
 
     </LinearLayout>
 

@@ -151,18 +151,15 @@ public class InventoryDbTest {
     private void queryInventory(String[] projection, InventoryUtils.CursorParser cursorParser) {
         SQLiteDatabase db = inventoryDbHelper.getReadableDatabase();
 
-        Cursor cursor = db.query(
+        try (Cursor cursor = db.query(
                 InventoryContract.InventoryEntry.TABLE_NAME,
                 projection,
                 null,
                 null,
                 null,
                 null,
-                null);
-        try {
+                null)) {
             cursorParser.parse(cursor);
-        } finally {
-            cursor.close();
         }
     }
 }

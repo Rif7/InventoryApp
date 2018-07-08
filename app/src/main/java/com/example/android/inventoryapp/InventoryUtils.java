@@ -106,10 +106,6 @@ final class InventoryUtils {
                 null);
     }
 
-    public static void deleteAllInventory(ContentResolver contentResolver) {
-        contentResolver.delete(InventoryEntry.CONTENT_URI, null, null);
-    }
-
     interface CursorParser {
         /**
          * Parse and process data. Depending of implementation can close the cursor

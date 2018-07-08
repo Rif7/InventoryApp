@@ -17,7 +17,7 @@ public final class InventoryContract {
     /**
      *
      */
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     /**
      *
@@ -103,8 +103,8 @@ public final class InventoryContract {
             return isValid(result);
         }
 
-        private static int VALID = 1;
-        private static int INVALID = 0;
+        private static final int VALID = 1;
+        private static final int INVALID = 0;
 
         private static boolean isValid(int result) {
             return result == VALID;
