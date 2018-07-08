@@ -6,7 +6,12 @@
     <color name="colorSecondary">#154c4e</color>
 
     <color name="color_sale_btn">#1aaf7e</color>
-    <color name="color_plus_btn">#15640a</color>
-    <color name="color_minus_btn">#c1093a</color>
+    <color name="color_plus_btn">#76c46b</color>
+    <color name="color_minus_btn">#d18397</color>
     <color name="color_call_btn">#a03eb6</color>
+
+
+    <color name="color_save_btn">#20f503</color>
+    <color name="color_delete_btn">#f70313</color>
+
 </resources>
