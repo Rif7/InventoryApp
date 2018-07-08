@@ -37,6 +37,10 @@ class Inventory {
     }
 
     public float getFloatPrice() {
+        return getFloatPrice(price);
+    }
+
+    public static float getFloatPrice(int price) {
         return ((float) price)/100;
     }
 

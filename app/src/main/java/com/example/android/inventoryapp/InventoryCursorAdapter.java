@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class InventoryCursorAdapter extends CursorAdapter {
     Context context;
 
@@ -38,12 +41,17 @@ public class InventoryCursorAdapter extends CursorAdapter {
     private void setSingleTextView(View view, Cursor cursor, int viewID, String columnName) {
         TextView textView = (TextView) view.findViewById(viewID);
         int columnIndex = cursor.getColumnIndex(columnName);
-        String productName = cursor.getString(columnIndex);
-        textView.setText(productName);
+        String productDetail = cursor.getString(columnIndex);
+        if (columnName.equals(InventoryEntry.COLUMN_PRICE)) {
+            float price = Inventory.getFloatPrice(Integer.valueOf(productDetail));
+            NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+            productDetail = format.format(price);
+        }
+        textView.setText(productDetail);
     }
 
     private void setOnClickListeners(View view, Cursor cursor) {
-        int columnIndex = cursor.getColumnIndex(InventoryEntry._ID); // TODO position
+        int columnIndex = cursor.getColumnIndex(InventoryEntry._ID);
         int index = cursor.getInt(columnIndex);
         final Uri currentInventoryUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, index);
         View.OnClickListener details = new View.OnClickListener() {

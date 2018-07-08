@@ -2,5 +2,11 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorSecondary">#154c4e</color>
+
+    <color name="color_sale_btn">#1aaf7e</color>
+    <color name="color_plus_btn">#15640a</color>
+    <color name="color_minus_btn">#c1093a</color>
+    <color name="color_call_btn">#a03eb6</color>
 </resources>

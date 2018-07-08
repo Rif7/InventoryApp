@@ -2,55 +2,72 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="@dimen/item_size"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/item_padding"
+    android:paddingBottom="@dimen/item_padding">
 
     <LinearLayout
         android:id="@+id/list_item_product_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
         <TextView
             android:id="@+id/list_item_name"
             android:text="Product"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="@dimen/item_greater_label"/>
 
         <TextView
             android:id="@+id/list_item_price"
             android:text="3452$"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textColor="@color/colorSecondary"
+            android:textSize="@dimen/item_smaller_label"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/list_item_quantity_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_weight="2">
 
         <TextView
             android:id="@+id/list_item_quantity_label"
             android:text="Quantity"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/item_smaller_label"/>
 
         <TextView
             android:id="@+id/list_item_quantity"
             android:text="5"
+            android:textColor="@color/color_sale_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/item_greater_label"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/list_item_sale_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="SALE"
+        android:background="@color/color_sale_btn"
         android:layout_weight="2"/>
 
 </LinearLayout>
